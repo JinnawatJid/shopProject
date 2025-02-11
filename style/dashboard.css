@@ -1,0 +1,167 @@
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  margin: 0;
+  padding: 20px;
+  color: #333;
+}
+
+h1,
+h2 {
+  color: #2c3e50;
+}
+
+/* Table Styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+th,
+td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #2c3e50;
+  color: #fff;
+  font-weight: bold;
+}
+
+tr:hover {
+  background-color: #f5f5f5;
+}
+
+/* Form Styles */
+form {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+select,
+button {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+button {
+  background-color: #2c3e50;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #1a252f;
+}
+
+/* Container Styles */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Section Styles */
+.section {
+  margin-bottom: 40px;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.action-buttons button {
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+/* Approve Button */
+.action-buttons button.approve {
+  background-color: #4caf50; /* Green */
+  color: white;
+}
+
+.action-buttons button.approve:hover {
+  background-color: #45a049; /* Darker Green */
+}
+
+/* Cancel Button */
+.action-buttons button.cancel {
+  background-color: #f44336; /* Red */
+  color: white;
+}
+
+.action-buttons button.cancel:hover {
+  background-color: #d32f2f; /* Darker Red */
+}
+
+/* Go to Index Button */
+.go-to-index {
+  width: 140px !important;
+  text-align: right !important;
+  margin-bottom: 20px !important;
+}
+
+.go-to-index button {
+  padding: 10px 20px !important;
+  background-color: #4caf50 !important;
+  color: white !important;
+  border: none !important;
+  cursor: pointer !important;
+  transition: background-color 0.3s ease !important;
+}
+
+.go-to-index button:hover {
+  background-color: #45a049 !important;
+}
+
+/* Additional Styles for Status Colors */
+.status-pending {
+  color: #ffc107; /* Yellow */
+  font-weight: bold;
+}
+
+.status-approve {
+  color: #28a745; /* Green */
+  font-weight: bold;
+}
+
+.status-cancel {
+  color: #dc3545; /* Red */
+  font-weight: bold;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  table,
+  form {
+    width: 100%;
+    display: block;
+    overflow-x: auto;
+  }
+}

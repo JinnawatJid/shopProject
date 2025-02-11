@@ -1,0 +1,102 @@
+[2025-01-31 18:05:07] Script started.
+[2025-01-31 18:05:07] Processing POST request.
+[2025-01-31 18:05:07] Selected Customers: Array
+(
+    [0] => C002
+)
+
+[2025-01-31 18:05:07] Customer Names: Array
+(
+    [C002] => Matt Damon
+)
+
+[2025-01-31 18:05:07] Items: Array
+(
+    [0] => P002
+)
+
+[2025-01-31 18:05:07] Quantities: Array
+(
+    [P001] => 1
+    [P002] => 3
+    [P003] => 1
+)
+
+[2025-01-31 18:05:07] VAT: 0.25
+[2025-01-31 18:05:07] Total with VAT: 3.85
+[2025-01-31 18:05:07] Fetched Products: Array
+(
+    [0] => Array
+        (
+            [IDProduct] => P001
+            [ProductName] => Apples
+            [ProductDesc] => Organic Apple, also known as Sebu, is a highly nutritious fruit celebrated for its numerous health benefits.
+            [PricePerUnit] => 3.50
+            [ImageURL] => https://organicmandya.com/cdn/shop/files/Apples_bf998dd2-0ee8-4880-9726-0723c6fbcff3.jpg?v=1721368465&width=1000
+            [StockQty] => 71
+        )
+
+    [1] => Array
+        (
+            [IDProduct] => P002
+            [ProductName] => Bananas
+            [ProductDesc] => Organic Banana Elakki, also known as Small Banana or Elaichi Banana, is a delightful and nutrient-rich fruit cherished.
+            [PricePerUnit] => 2.00
+            [ImageURL] => https://organicmandya.com/cdn/shop/files/BananaElakki.jpg?v=1721369681&width=1000
+            [StockQty] => 188
+        )
+
+    [2] => Array
+        (
+            [IDProduct] => P003
+            [ProductName] => Carrots
+            [ProductDesc] => Organic Carrot, is renowned for its exceptional quality and flavor. Grown in the pristine environment of Ooty.
+            [PricePerUnit] => 1.25
+            [ImageURL] => https://organicmandya.com/cdn/shop/files/OotyCarrot.jpg?v=1721371505&width=1000
+            [StockQty] => 129
+        )
+
+)
+
+[2025-01-31 18:05:07] Products by ID: Array
+(
+    [P001] => Array
+        (
+            [IDProduct] => P001
+            [ProductName] => Apples
+            [ProductDesc] => Organic Apple, also known as Sebu, is a highly nutritious fruit celebrated for its numerous health benefits.
+            [PricePerUnit] => 3.50
+            [ImageURL] => https://organicmandya.com/cdn/shop/files/Apples_bf998dd2-0ee8-4880-9726-0723c6fbcff3.jpg?v=1721368465&width=1000
+            [StockQty] => 71
+        )
+
+    [P002] => Array
+        (
+            [IDProduct] => P002
+            [ProductName] => Bananas
+            [ProductDesc] => Organic Banana Elakki, also known as Small Banana or Elaichi Banana, is a delightful and nutrient-rich fruit cherished.
+            [PricePerUnit] => 2.00
+            [ImageURL] => https://organicmandya.com/cdn/shop/files/BananaElakki.jpg?v=1721369681&width=1000
+            [StockQty] => 188
+        )
+
+    [P003] => Array
+        (
+            [IDProduct] => P003
+            [ProductName] => Carrots
+            [ProductDesc] => Organic Carrot, is renowned for its exceptional quality and flavor. Grown in the pristine environment of Ooty.
+            [PricePerUnit] => 1.25
+            [ImageURL] => https://organicmandya.com/cdn/shop/files/OotyCarrot.jpg?v=1721371505&width=1000
+            [StockQty] => 129
+        )
+
+)
+
+[2025-01-31 18:05:07] Database connection successful.
+[2025-01-31 18:05:07] Processing customer ID: C002, Name: Matt Damon
+[2025-01-31 18:05:07] Inserted transaction header ID: 22
+[2025-01-31 18:05:07] Processing product ID: P002, Name: Bananas, Quantity: 3, Price: 2.00
+[2025-01-31 18:05:07] Subtotal for product ID: P002 is 6
+[2025-01-31 18:05:07] Total price for product ID: P002 is 6.25
+[2025-01-31 18:05:07] Transaction committed successfully.
+[2025-01-31 18:05:07] Redirecting to receipt.php with success=true
