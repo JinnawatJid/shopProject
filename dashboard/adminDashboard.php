@@ -1,6 +1,57 @@
 <?php
 // Include the database connection
 include __DIR__ . '/../condb.php';
+
+$totalOrders = getTotalOrders($conn);
+$bestSellerData = getBestSeller($conn);
+$averageOrderValue = getAverageOrderValue($conn);
+
+
+$servername = "localhost:3307";
+$username = "root";
+$password = "";
+$dbname = "fullstack";
+
+// Create a connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Sum Order
+function getTotalOrders($conn) {
+    $sql = "SELECT COUNT(*) AS total FROM OrderHeader";
+    $result = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_assoc($result);
+    return $row['total'] ?? 0;
+}
+
+// Best Seller
+function getBestSeller($conn) {
+    $sql = "SELECT p.ProductName, SUM(d.Qty) AS total_sold 
+    FROM OrderDetail d
+    JOIN Product p ON d.IDProduct = p.IDProduct
+    GROUP BY d.IDProduct 
+    ORDER BY total_sold DESC 
+    LIMIT 5";
+    $result = mysqli_query($conn, $sql);
+
+    $data = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $data[] = $row;
+    }
+    return $data;
+}
+
+// AOV
+function getAverageOrderValue($conn) {
+    $sql = "SELECT AVG(total_price) AS avg_order_value 
+            FROM (SELECT SUM(p.PricePerUnit * d.Qty) AS total_price 
+                  FROM OrderDetail d
+                  JOIN Product p ON d.IDProduct = p.IDProduct
+                  GROUP BY d.OrderID) AS order_totals";
+    $result = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_assoc($result);
+    return number_format($row['avg_order_value'] ?? 0, 2);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -27,6 +78,27 @@ include __DIR__ . '/../condb.php';
     <div class="container">
 
         <h1>Admin Dashboard</h1>
+
+        
+    <div class="dashboard-container">
+        <!-- Box 1: จำนวน Order ทั้งหมด -->
+        <div class="box">
+            <h3>จำนวนออเดอร์ทั้งหมด</h3>
+            <p style="font-size: 24px; font-weight: bold;"><?= $totalOrders ?></p>
+        </div>
+
+        <!-- Box 2: สินค้า Best Seller -->
+        <div class="box">
+            <h3>สินค้าขายดี</h3>
+            <canvas id="bestSellerChart"></canvas>
+        </div>
+
+        <!-- Box 3: ราคาเฉลี่ยต่อออเดอร์ -->
+        <div class="box">
+            <h3>ราคาเฉลี่ยต่อออเดอร์</h3>
+            <p style="font-size: 24px; font-weight: bold;">฿<?= $averageOrderValue ?></p>
+        </div>
+    </div>
 
         <!-- Section to display orders -->
         <div class="section">
@@ -103,15 +175,15 @@ include __DIR__ . '/../condb.php';
         function updateOrderStatus(orderId, status) {
             if (confirm(`Are you sure you want to ${status.toLowerCase()} this order?`)) {
                 fetch('../routes/updateOrderStatus.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            orderId: orderId,
-                            status: status
-                        })
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        orderId: orderId,
+                        status: status
                     })
+                })
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
