@@ -17,7 +17,7 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 
 // Sum Order
 function getTotalOrders($conn) {
-    $sql = "SELECT COUNT(*) AS total FROM OrderHeader";
+    $sql = "SELECT COUNT(*) AS total FROM transaction_header";
     $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_assoc($result);
     return $row['total'] ?? 0;
@@ -26,8 +26,8 @@ function getTotalOrders($conn) {
 // Best Seller
 function getBestSeller($conn) {
     $sql = "SELECT p.ProductName, SUM(d.Qty) AS total_sold 
-    FROM OrderDetail d
-    JOIN Product p ON d.IDProduct = p.IDProduct
+    FROM transaction_detail d
+    JOIN stock p ON d.IDProduct = p.IDProduct
     GROUP BY d.IDProduct 
     ORDER BY total_sold DESC 
     LIMIT 5";
@@ -44,9 +44,9 @@ function getBestSeller($conn) {
 function getAverageOrderValue($conn) {
     $sql = "SELECT AVG(total_price) AS avg_order_value 
             FROM (SELECT SUM(p.PricePerUnit * d.Qty) AS total_price 
-                  FROM OrderDetail d
-                  JOIN Product p ON d.IDProduct = p.IDProduct
-                  GROUP BY d.OrderID) AS order_totals";
+                  FROM transaction_detail d
+                  JOIN stock p ON d.IDProduct = p.IDProduct
+                  GROUP BY d.IDdetail) AS order_totals";
     $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_assoc($result);
     return number_format($row['avg_order_value'] ?? 0, 2);
