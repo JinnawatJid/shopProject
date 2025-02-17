@@ -3,7 +3,7 @@
 include __DIR__ . '/../condb.php';
 
 // SQL query to fetch transaction headers
-$sql = "SELECT IDtrans, IDCust, CustName, status, PendingTimestamp, ApproveTimestamp FROM transaction_header"; // Replace with your actual table name
+$sql = "SELECT IDtrans, IDCust, CustName, status, PendingTimestamp, ApproveTimestamp, SELECT COUNT(*) as totalOrders FROM transaction_header"; // Replace with your actual table name
 $result = $conn->query($sql);  // Store the result of the query in the $result variable
 
 // Check if there are any transactions
