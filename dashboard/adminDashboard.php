@@ -250,13 +250,13 @@ include __DIR__ . '/../condb.php';
             }
         }
 
+        fetchPickUpList();
         fetchSumOrder();
         fetchBestSeller();
         fetchAOV();
         // Fetch orders and stock on page load
         fetchOrders();
         fetchStock();
-
     </script>
 </body>
 
