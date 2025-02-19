@@ -10,11 +10,9 @@ include __DIR__ . '/../condb.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-
     <style>
         <?php include '../style/dashboard.css'; ?>
     </style>
-
 </head>
 
 <body>
@@ -25,7 +23,6 @@ include __DIR__ . '/../condb.php';
         </a>
     </div>
     <div class="container">
-
         <h1>Admin Dashboard</h1>
 
 
@@ -53,6 +50,12 @@ include __DIR__ . '/../condb.php';
         <div class="section">
             <h2>Orders</h2>
             <div id="orders"></div>
+        </div>
+
+        <!-- Section to display pickup list -->
+        <div class="section">
+            <h2>Pick Up List</h2>
+            <div id="pkList"></div>
         </div>
 
         <!-- Section to display stock -->
@@ -153,7 +156,6 @@ include __DIR__ . '/../condb.php';
                         } else if (order.status === 'Cancel') {
                             statusClass = 'status-cancel';
                         }
-
                         ordersHtml += `<tr>
                             <td>${order.IDtrans}</td>
                             <td>${order.IDCust}</td>
@@ -162,10 +164,10 @@ include __DIR__ . '/../condb.php';
                             <td>${order.PendingTimestamp}</td>
                             <td>${order.ApproveTimestamp}</td>
                             <td>
-                            <div class="action-buttons">
-                                <button class="approve" onclick="updateOrderStatus(${order.IDtrans}, 'Approve')">Approve</button>
-                                <button class="cancel" onclick="updateOrderStatus(${order.IDtrans}, 'Cancel')">Cancel</button>
-                            </div>
+                                <div class="action-buttons">
+                                    <button class="approve" onclick="updateOrderStatus(${order.IDtrans}, 'Approve')">Approve</button>
+                                    <button class="cancel" onclick="updateOrderStatus(${order.IDtrans}, 'Cancel')">Cancel</button>
+                                </div>
                             </td>
                         </tr>`;
                     });
@@ -192,6 +194,35 @@ include __DIR__ . '/../condb.php';
                     stockHtml += '</table>';
                     document.getElementById('stock').innerHTML = stockHtml;
                 });
+        }
+
+        function fetchPickUpList() {
+            fetch('../routes/fetchPickupList.php')
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Pickup List Data:", data); // Add this line to inspect the data
+                    let pkListHtml = '<table><tr><th>Date</th><th>IDProduct</th><th>ProductName</th><th>Qty</th><th>Status</th></tr>';
+                    data.forEach(item => {
+                        let statusClass = '';
+                        if (item.Status === 'Pending') { // Assuming 'status' should be 'Status'
+                            statusClass = 'status-pending';
+                        } else if (item.Status === 'Approve') { // Assuming 'status' should be 'Status'
+                            statusClass = 'status-approve';
+                        } else if (item.Status === 'Cancel') { // Assuming 'status' should be 'Status'
+                            statusClass = 'status-cancel';
+                        }
+                        pkListHtml += `<tr>
+                    <td>${item.pickup_date}</td>
+                    <td>${item.IDProduct}</td>
+                    <td>${item.ProductName}</td>
+                    <td>${item.Qty}</td>
+                    <td class="${statusClass}">${item.Status}</td>
+                </tr>`;
+                    });
+                    pkListHtml += '</table>';
+                    document.getElementById('pkList').innerHTML = pkListHtml;
+                })
+                .catch(error => console.error('Error fetching pickup list:', error));
         }
 
         // Function to update order status

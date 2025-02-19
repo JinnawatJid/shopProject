@@ -1,0 +1,110 @@
+[2025-02-17 08:18:50] Script started.
+[2025-02-17 08:18:50] Processing POST request.
+[2025-02-17 08:18:50] Selected Customers: Array
+(
+    [0] => C005
+)
+
+[2025-02-17 08:18:50] Customer Names: Array
+(
+    [C005] => Eve Wyne
+)
+
+[2025-02-17 08:18:50] Items: Array
+(
+    [0] => P001
+    [1] => P002
+    [2] => P003
+)
+
+[2025-02-17 08:18:50] Quantities: Array
+(
+    [P001] => 1
+    [P002] => 2
+    [P003] => 2
+)
+
+[2025-02-17 08:18:50] VAT: 0.76
+[2025-02-17 08:18:50] Total with VAT: 11.66
+[2025-02-17 08:18:50] Fetched Products: Array
+(
+    [0] => Array
+        (
+            [IDProduct] => P001
+            [ProductName] => Apples
+            [ProductDesc] => Organic Apple, also known as Sebu, is a highly nutritious fruit celebrated for its numerous health benefits.
+            [PricePerUnit] => 3.50
+            [ImageURL] => https://organicmandya.com/cdn/shop/files/Apples_bf998dd2-0ee8-4880-9726-0723c6fbcff3.jpg?v=1721368465&width=1000
+            [StockQty] => 71
+        )
+
+    [1] => Array
+        (
+            [IDProduct] => P002
+            [ProductName] => Bananas
+            [ProductDesc] => Organic Banana Elakki, also known as Small Banana or Elaichi Banana, is a delightful and nutrient-rich fruit cherished.
+            [PricePerUnit] => 2.00
+            [ImageURL] => https://organicmandya.com/cdn/shop/files/BananaElakki.jpg?v=1721369681&width=1000
+            [StockQty] => 185
+        )
+
+    [2] => Array
+        (
+            [IDProduct] => P003
+            [ProductName] => Carrots
+            [ProductDesc] => Organic Carrot, is renowned for its exceptional quality and flavor. Grown in the pristine environment of Ooty.
+            [PricePerUnit] => 1.25
+            [ImageURL] => https://organicmandya.com/cdn/shop/files/OotyCarrot.jpg?v=1721371505&width=1000
+            [StockQty] => 129
+        )
+
+)
+
+[2025-02-17 08:18:50] Products by ID: Array
+(
+    [P001] => Array
+        (
+            [IDProduct] => P001
+            [ProductName] => Apples
+            [ProductDesc] => Organic Apple, also known as Sebu, is a highly nutritious fruit celebrated for its numerous health benefits.
+            [PricePerUnit] => 3.50
+            [ImageURL] => https://organicmandya.com/cdn/shop/files/Apples_bf998dd2-0ee8-4880-9726-0723c6fbcff3.jpg?v=1721368465&width=1000
+            [StockQty] => 71
+        )
+
+    [P002] => Array
+        (
+            [IDProduct] => P002
+            [ProductName] => Bananas
+            [ProductDesc] => Organic Banana Elakki, also known as Small Banana or Elaichi Banana, is a delightful and nutrient-rich fruit cherished.
+            [PricePerUnit] => 2.00
+            [ImageURL] => https://organicmandya.com/cdn/shop/files/BananaElakki.jpg?v=1721369681&width=1000
+            [StockQty] => 185
+        )
+
+    [P003] => Array
+        (
+            [IDProduct] => P003
+            [ProductName] => Carrots
+            [ProductDesc] => Organic Carrot, is renowned for its exceptional quality and flavor. Grown in the pristine environment of Ooty.
+            [PricePerUnit] => 1.25
+            [ImageURL] => https://organicmandya.com/cdn/shop/files/OotyCarrot.jpg?v=1721371505&width=1000
+            [StockQty] => 129
+        )
+
+)
+
+[2025-02-17 08:18:50] Database connection successful.
+[2025-02-17 08:18:50] Processing customer ID: C005, Name: Eve Wyne
+[2025-02-17 08:18:50] Inserted transaction header ID: 23
+[2025-02-17 08:18:50] Processing product ID: P001, Name: Apples, Quantity: 1, Price: 3.50
+[2025-02-17 08:18:50] Subtotal for product ID: P001 is 3.5
+[2025-02-17 08:18:50] Total price for product ID: P001 is 3.7533333333333
+[2025-02-17 08:18:50] Processing product ID: P002, Name: Bananas, Quantity: 2, Price: 2.00
+[2025-02-17 08:18:50] Subtotal for product ID: P002 is 4
+[2025-02-17 08:18:50] Total price for product ID: P002 is 4.2533333333333
+[2025-02-17 08:18:50] Processing product ID: P003, Name: Carrots, Quantity: 2, Price: 1.25
+[2025-02-17 08:18:50] Subtotal for product ID: P003 is 2.5
+[2025-02-17 08:18:50] Total price for product ID: P003 is 2.7533333333333
+[2025-02-17 08:18:50] Transaction committed successfully.
+[2025-02-17 08:18:50] Redirecting to receipt.php with success=true
