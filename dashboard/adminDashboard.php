@@ -1,57 +1,6 @@
 <?php
 // Include the database connection
 include __DIR__ . '/../condb.php';
-
-$totalOrders = getTotalOrders($conn);
-$bestSellerData = getBestSeller($conn);
-$averageOrderValue = getAverageOrderValue($conn);
-
-
-$servername = "localhost:3307";
-$username = "root";
-$password = "";
-$dbname = "fullstack";
-
-// Create a connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Sum Order
-function getTotalOrders($conn) {
-    $sql = "SELECT COUNT(*) AS total FROM OrderHeader";
-    $result = mysqli_query($conn, $sql);
-    $row = mysqli_fetch_assoc($result);
-    return $row['total'] ?? 0;
-}
-
-// Best Seller
-function getBestSeller($conn) {
-    $sql = "SELECT p.ProductName, SUM(d.Qty) AS total_sold 
-    FROM OrderDetail d
-    JOIN Product p ON d.IDProduct = p.IDProduct
-    GROUP BY d.IDProduct 
-    ORDER BY total_sold DESC 
-    LIMIT 5";
-    $result = mysqli_query($conn, $sql);
-
-    $data = [];
-    while ($row = mysqli_fetch_assoc($result)) {
-        $data[] = $row;
-    }
-    return $data;
-}
-
-// AOV
-function getAverageOrderValue($conn) {
-    $sql = "SELECT AVG(total_price) AS avg_order_value 
-            FROM (SELECT SUM(p.PricePerUnit * d.Qty) AS total_price 
-                  FROM OrderDetail d
-                  JOIN Product p ON d.IDProduct = p.IDProduct
-                  GROUP BY d.OrderID) AS order_totals";
-    $result = mysqli_query($conn, $sql);
-    $row = mysqli_fetch_assoc($result);
-    return number_format($row['avg_order_value'] ?? 0, 2);
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -79,26 +28,26 @@ function getAverageOrderValue($conn) {
 
         <h1>Admin Dashboard</h1>
 
-        
-    <div class="dashboard-container">
-        <!-- Box 1: จำนวน Order ทั้งหมด -->
-        <div class="box">
-            <h3>จำนวนออเดอร์ทั้งหมด</h3>
-            <p style="font-size: 24px; font-weight: bold;"><?= $totalOrders ?></p>
-        </div>
 
-        <!-- Box 2: สินค้า Best Seller -->
-        <div class="box">
-            <h3>สินค้าขายดี</h3>
-            <canvas id="bestSellerChart"></canvas>
-        </div>
+        <div class="dashboard-container">
+            <!-- Box 1: Sum Order  -->
+            <div class="box">
+                <h3>Summary Order</h3>
+                <p style="font-size: 24px; font-weight: bold;" id="SummeryOrder"></p>
+            </div>
 
-        <!-- Box 3: ราคาเฉลี่ยต่อออเดอร์ -->
-        <div class="box">
-            <h3>ราคาเฉลี่ยต่อออเดอร์</h3>
-            <p style="font-size: 24px; font-weight: bold;">฿<?= $averageOrderValue ?></p>
+            <!-- Box 2: สินค้า Best Seller -->
+            <div class="box">
+                <h3>Beset Seller</h3>
+                <canvas id="bestSellerChart"></canvas>
+            </div>
+
+            <!-- Box 3: Average Order Value -->
+            <div class="box">
+                <h3>Average Order Value</h3>
+                <p style="font-size: 24px; font-weight: bold;" id="AOV"></p>
+            </div>
         </div>
-    </div>
 
         <!-- Section to display orders -->
         <div class="section">
@@ -113,7 +62,81 @@ function getAverageOrderValue($conn) {
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
     <script>
+
+        // Function to fetch and display Summary Order
+        function fetchSumOrder() {
+            fetch('../routes/fetchSummaryOrder.php')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('SummeryOrder').textContent = data.total; // แสดงค่าตรงๆ ไม่ต้องใช้ table
+                })
+                .catch(error => console.error('Error fetching summary order:', error));
+        }
+
+        // Function to fetch and display Best Seller
+        function fetchBestSeller() {
+            fetch('../routes/fetchBestSeller.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length > 0) {
+                        let labels = data.map(item => item.ProductName);
+                        let values = data.map(item => item.TotalSold);
+
+                        let ctx = document.getElementById('bestSellerChart').getContext('2d');
+
+                        new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: labels,
+                                datasets: [{
+                                    label: 'Quantity (pieces)',
+                                    data: values,
+                                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+                                    borderColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                plugins: {
+                                    legend: {
+                                        display: true
+                                    },
+                                    datalabels: {
+                                        anchor: 'end',
+                                        align: 'top',
+                                        formatter: (value) => value + ' pcs'
+                                    }
+                                },
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        });
+                    } else {
+                        document.getElementById('bestSellerChart').parentElement.innerHTML = "<p style='color: red;'>No Best Seller Data</p>";
+                    }
+                })
+                .catch(error => console.error('Error fetching best seller:', error));
+        }
+
+
+        // Function to fetch and display AverageOrderValue
+        function fetchAOV() {
+            fetch('../routes/fetchAverageOrderValue.php')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('AOV').textContent = data.total; // แสดงค่าตรงๆ ไม่ต้องใช้ table
+                })
+                .catch(error => console.error('Error fetching summary order:', error));
+        }
+
         // Function to fetch and display orders
         function fetchOrders() {
             fetch('../routes/fetchTransactionHeader.php')
@@ -196,9 +219,13 @@ function getAverageOrderValue($conn) {
             }
         }
 
+        fetchSumOrder();
+        fetchBestSeller();
+        fetchAOV();
         // Fetch orders and stock on page load
         fetchOrders();
         fetchStock();
+
     </script>
 </body>
 
