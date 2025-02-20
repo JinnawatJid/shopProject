@@ -2,12 +2,23 @@
 // Include the database connection
 include __DIR__ . '/../condb.php';
 
-// SQL query to fetch transaction headers
-$sql = "SELECT IDtrans, IDCust, CustName, status, PendingTimestamp, ApproveTimestamp FROM transaction_header"; // Replace with your actual table name
-$result = $conn->query($sql);  // Store the result of the query in the $result variable
+$startDate = isset($_GET['startDate']) ? $_GET['startDate'] : null;
+$endDate = isset($_GET['endDate']) ? $_GET['endDate'] : null;
 
-// Check if there are any transactions
-if ($result->num_rows > 0) {
+// SQL query to fetch transaction headers
+$sql = "SELECT IDtrans, IDCust, CustName, status, PendingTimestamp, ApproveTimestamp FROM transaction_header";
+
+if ($startDate && $endDate) {
+    $sql .= " WHERE PendingTimestamp >= '$startDate 00:00:00' AND PendingTimestamp <= '$endDate 23:59:59'"; // **Date Range WHERE clause**
+}
+
+$result = $conn->query($sql);
+
+if (!$result) {
+    header('Content-Type: application/json');
+    echo json_encode(["error" => "Query failed"]);
+    http_response_code(500); // Set HTTP status code to 500 for error
+} elseif ($result->num_rows > 0) {
     // Fetch all rows as an associative array
     $transactions = [];
     while ($row = $result->fetch_assoc()) {
@@ -22,6 +33,6 @@ if ($result->num_rows > 0) {
     echo json_encode([]);
 }
 
-// Close the database connection
+
+// Close the database connection (consider if you want to close it here or manage connection globally)
 $conn->close();
-?>
