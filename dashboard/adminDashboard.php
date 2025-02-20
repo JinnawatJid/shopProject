@@ -187,8 +187,15 @@ include __DIR__ . '/../condb.php';
         }
 
         // Function to fetch and display orders
-        function fetchOrders() {
-            fetch('../routes/fetchTransactionHeader.php')
+        function fetchOrders(startDate = null, endDate = null) { // Add startDate and endDate parameters
+            let url = '../routes/fetchTransactionHeader.php';
+            if (startDate && endDate) {
+                url += `?startDate=${startDate}&endDate=${endDate}`; // Append dates as query parameters
+            }
+
+            console.log("Fetching Orders from URL:", url); // Log the URL
+
+            fetch(url)
                 .then(response => response.json())
                 .then(data => {
                     let ordersHtml = '<table><tr><th>IDtrans</th><th>IDCust</th><th>CustName</th><th>Status</th><th>Pending Timestamp</th><th>Approve Timestamp</th><th>Actions</th></tr>';
@@ -242,8 +249,15 @@ include __DIR__ . '/../condb.php';
                 });
         }
 
-        function fetchPickUpList() {
-            fetch('../routes/fetchPickupList.php')
+        function fetchPickUpList(startDate = null, endDate = null) { // Add startDate and endDate parameters
+            let url = '../routes/fetchPickupList.php';
+            if (startDate && endDate) {
+                url += `?startDate=${startDate}&endDate=${endDate}`; // Append dates as query parameters
+            }
+
+            console.log("Fetching Pickup List from URL:", url); // Log the URL
+
+            fetch(url)
                 .then(response => response.json())
                 .then(data => {
                     console.log("Pickup List Data:", data); // Add this line to inspect the data
@@ -304,6 +318,8 @@ include __DIR__ . '/../condb.php';
             fetchSumOrder(startDate, endDate);
             fetchBestSeller(startDate, endDate);
             fetchAOV(startDate, endDate);
+            fetchOrders(startDate, endDate);
+            fetchPickUpList(startDate, endDate);
         }
 
         fetchPickUpList();
