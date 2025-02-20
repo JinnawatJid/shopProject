@@ -16,12 +16,21 @@ include __DIR__ . '/../condb.php';
 </head>
 
 <body>
-    <!-- Go to Index Button -->
     <div class="go-to-index">
         <a href="../index.php" style="text-decoration: none;">
             <button>Go to Index</button>
         </a>
+        <div class="filter-section">
+            <label for="startDate">Start:</label>
+            <input type="date" id="startDate" name="startDate">
+
+            <label for="endDate">End:</label>
+            <input type="date" id="endDate" name="endDate">
+
+            <button onclick="applyDateFilter()">Apply Filter</button>
+        </div>
     </div>
+
     <div class="container">
         <h1>Admin Dashboard</h1>
 
@@ -69,10 +78,13 @@ include __DIR__ . '/../condb.php';
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
     <script>
-
         // Function to fetch and display Summary Order
-        function fetchSumOrder() {
-            fetch('../routes/fetchSummaryOrder.php')
+        function fetchSumOrder(startDate = null, endDate = null) { // Add startDate and endDate parameters
+            let url = '../routes/fetchSummaryOrder.php';
+            if (startDate && endDate) {
+                url += `?startDate=${startDate}&endDate=${endDate}`; // Append dates as query parameters
+            }
+            fetch(url)
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('SummeryOrder').textContent = data.total; // แสดงค่าตรงๆ ไม่ต้องใช้ table
@@ -80,18 +92,47 @@ include __DIR__ . '/../condb.php';
                 .catch(error => console.error('Error fetching summary order:', error));
         }
 
+        let bestSellerChartInstance = null; // Variable to hold the chart instance
+
         // Function to fetch and display Best Seller
-        function fetchBestSeller() {
-            fetch('../routes/fetchBestSeller.php')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.length > 0) {
+        function fetchBestSeller(startDate = null, endDate = null) { // Add startDate and endDate parameters
+            let url = '../routes/fetchBestSeller.php';
+            if (startDate && endDate) {
+                url += `?startDate=${startDate}&endDate=${endDate}`; // Append dates as query parameters
+            }
+
+            console.log("Fetching Best Seller from URL:", url); // Log the URL
+
+            fetch(url)
+                .then(response => {
+                    console.log("Raw response status:", response.status); // Log the response status code
+                    console.log("Raw response headers:", response.headers); // Log headers
+                    return response.text(); // Get the raw response text first for debugging
+                })
+                .then(rawText => {
+                    console.log("Raw response text:", rawText); // Log the raw text
+                    let data; // Declare data outside try-catch scope
+                    try {
+                        data = JSON.parse(rawText); // Try to parse as JSON
+                        console.log("Parsed JSON data:", data); // Log parsed JSON data
+                    } catch (error) {
+                        console.error('Error parsing JSON:', error);
+                        console.error('Raw text that failed to parse:', rawText);
+                        return; // Exit the function if JSON parsing fails
+                    }
+
+                    if (data.length > 0) { // Check if data is array and has length
                         let labels = data.map(item => item.ProductName);
                         let values = data.map(item => item.TotalSold);
 
                         let ctx = document.getElementById('bestSellerChart').getContext('2d');
 
-                        new Chart(ctx, {
+                        // **Destroy existing chart if it exists**
+                        if (bestSellerChartInstance) {
+                            bestSellerChartInstance.destroy();
+                        }
+
+                        bestSellerChartInstance = new Chart(ctx, { // **Assign new chart to the variable**
                             type: 'bar',
                             data: {
                                 labels: labels,
@@ -128,16 +169,21 @@ include __DIR__ . '/../condb.php';
                 })
                 .catch(error => console.error('Error fetching best seller:', error));
         }
+        // Function to fetch and display AverageOrderValue with date filter
+        function fetchAOV(startDate = null, endDate = null) { // Add startDate and endDate parameters
+            let url = '../routes/fetchAverageOrderValue.php';
+            if (startDate && endDate) {
+                url += `?startDate=${startDate}&endDate=${endDate}`; // Append dates as query parameters
+            }
 
+            console.log("Fetching AOV from URL:", url); // Log the URL
 
-        // Function to fetch and display AverageOrderValue
-        function fetchAOV() {
-            fetch('../routes/fetchAverageOrderValue.php')
+            fetch(url)
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById('AOV').textContent = data.total; // แสดงค่าตรงๆ ไม่ต้องใช้ table
+                    document.getElementById('AOV').textContent = data.total; // Display AOV value
                 })
-                .catch(error => console.error('Error fetching summary order:', error));
+                .catch(error => console.error('Error fetching Average Order Value:', error));
         }
 
         // Function to fetch and display orders
@@ -229,15 +275,15 @@ include __DIR__ . '/../condb.php';
         function updateOrderStatus(orderId, status) {
             if (confirm(`Are you sure you want to ${status.toLowerCase()} this order?`)) {
                 fetch('../routes/updateOrderStatus.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        orderId: orderId,
-                        status: status
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            orderId: orderId,
+                            status: status
+                        })
                     })
-                })
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
@@ -248,6 +294,16 @@ include __DIR__ . '/../condb.php';
                         }
                     });
             }
+        }
+
+        // Apply Date Filter Function
+        function applyDateFilter() {
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+
+            fetchSumOrder(startDate, endDate);
+            fetchBestSeller(startDate, endDate);
+            fetchAOV(startDate, endDate);
         }
 
         fetchPickUpList();
