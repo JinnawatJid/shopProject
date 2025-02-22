@@ -98,6 +98,16 @@
                         echo '</div>';
                     }
                 }
+            }
+            // Check if customer is passed using the old format (IDCust and CustName)
+            elseif (isset($_GET['IDCust']) && isset($_GET['CustName'])) {
+                $customerID = $_GET['IDCust'];
+                $customerName = $_GET['CustName'];
+
+                echo '<div class="customer-item">';
+                echo '<div class="customer-id">Customer ID: ' . htmlspecialchars($customerID) . '</div>';
+                echo '<div class="customer-name">Name: ' . htmlspecialchars($customerName) . '</div>';
+                echo '</div>';
             } else {
                 echo '<div class="empty-message">No customers selected.</div>';
             }
