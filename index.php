@@ -1,147 +1,162 @@
 <?php
 
-// Include the database connection
-include 'condb.php';
+include './condb.php';
 
-// Step 1: SQL query to fetch customers
-$sql = "SELECT IDCust, CustName, Tel FROM customer"; // Replace with your actual table name
-$result = $conn->query($sql);  // Store the result of the query in the $result variable
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $custID = trim($_POST['custID']);
 
-// Set the number of records per page
-$recordsPerPage = 5;
+  // ตรวจสอบว่ากรอกข้อมูลครบหรือไม่
+  if (empty($custID)) {
+    $error = "Please enter your UserID.";
+  } else if ($custID === 'admin') {
+    header("Location: ./dashboard/adminDashboard.php");
+    exit();
+  } else if (!preg_match('/^C00[1-9]$/', $custID)) {
+    $error = "Invalid UserID format. Please use C001 to C009.";
+  } else {
+    // ค้นหาข้อมูลผู้ใช้ใน Database
+    $stmt = $conn->prepare("SELECT IDCust, CustName, Tel, Address FROM customer WHERE IDCust = ?");
+    $stmt->bind_param("s", $custID);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-// Get the total number of records
-$totalRecords = $result->num_rows;
+    // ตรวจสอบว่าพบข้อมูลหรือไม่
+    if ($row = $result->fetch_assoc()) {
+      // สร้าง array สำหรับ selected_customers[]
+      $selected_customers_array = array($row['IDCust']);
 
-// Calculate the number of pages
-$numPages = ceil($totalRecords / $recordsPerPage);
+      // สร้าง array แบบ associative สำหรับ customer_names[IDCust]
+      $customer_names_array = array($row['IDCust'] => $row['CustName']);
 
-// Get the current page number
-if (isset($_GET['page'])) {
-    $currentPage = $_GET['page'];
-} else {
-    $currentPage = 1;
+      // สร้าง query string โดยใช้ http_build_query()
+      $query_params = http_build_query(array(
+        'selected_customers' => $selected_customers_array,
+        'customer_names' => $customer_names_array,
+      ));
+
+      // สร้าง URL ใหม่โดยรวม base URL กับ query string ที่สร้างขึ้น
+      header("Location: ./catalog.php?" . $query_params);
+      exit(); // หยุดการทำงานหลังจาก redirect
+    } else {
+      $error = "Don't have this UserID in database";
+    }
+    $stmt->close();
+  }
 }
-
-// Calculate the starting record number
-$startRecord = ($currentPage - 1) * $recordsPerPage;
-
-// Add the LIMIT clause to the SQL query
-$sql .= " LIMIT $startRecord, $recordsPerPage";
-
-// Re-run the query with the LIMIT clause
-$result = $conn->query($sql);
 ?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Select Customer</title>
+  <meta charset="UTF-8">
+  <title>Log In</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      /* Fallback background color */
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      position: relative;
+      /* For pseudo-element positioning */
+    }
 
-    <style>
-        <?php include 'style/index.css'; ?>
-    </style>
+    body::before {
+      content: "";
+      background-image: url("https://www.healthyeating.org/images/default-source/home-0.0/nutrition-topics-2.0/general-nutrition-wellness/2-2-2-3foodgroups_fruits_detailfeature.jpg?sfvrsn=64942d53_4");
+      background-repeat: no-repeat;
+      background-size: cover;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: -2;
+      /* Place background image further back */
+    }
 
+    body::after {
+      content: "";
+      background-color: grey;
+      /* Grey color layer */
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      opacity: 0.4;
+      /* Transparency for the grey layer */
+      z-index: -1;
+      /* Place grey layer in front of background image, but behind content */
+    }
+
+    .login-box {
+      background-color: white;
+      width: 350px;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      /* Ensure login-box is on top */
+    }
+
+    .login-box h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .error {
+      color: #721c24;
+      background-color: #f8d7da;
+      border: 1px solid #f5c6cb;
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+
+    button[type="submit"] {
+      background-color: #5cb85c;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #4cae4c;
+    }
+  </style>
 </head>
 
 <body>
-    <div style="text-align: right; margin-bottom: 20px;">
-        <a href="./dashboard/adminDashboard.php" style="text-decoration: none;">
-            <button style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer;">
-                Go to Admin Dashboard
-            </button>
-        </a>
-    </div>
-    <h1 style="padding-top: 20px;">Select a Customer</h1>
-    <form method="GET" action="catalog.php">
-        <div class="container">
-            <?php
-            // Step 2: Check if there are any customers
-            if ($result->num_rows > 0) {
-                // Loop through the result
-                while ($row = mysqli_fetch_array($result)) {
-                    $customerID = $row["IDCust"];
-                    $customerName = $row["CustName"];
-                    $customerTel = $row["Tel"];
-            ?>
-                    <div class="customer-box">
-                        <!-- Customer Image -->
-                        <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png" alt="Customer Image">
-                        <!-- Customer Details -->
-                        <h3><?php echo $customerID; ?></h3>
-                        <p><?php echo $customerName; ?>, Tel: <?php echo $customerTel; ?></p>
-                        <!-- Checkbox -->
-                        <label>
-                            <input type="checkbox" name="selected_customers[]" value="<?php echo $customerID; ?>"
-                                data-name="<?php echo urlencode($customerName); ?>"
-                                onclick="updateSelectedCustomers(this, '<?php echo $customerID; ?>', '<?php echo $customerName; ?>')"> Select this Customer
-                        </label>
-                        <!-- Hidden input for customer name, initially not included -->
-                    </div>
-            <?php
-                }
-            } else {
-                echo "<p>No customers found.</p>";
-            }
-            ?>
-        </div>
-        <div class="button-container">
-            <button type="submit">Proceed to Order</button>
-        </div>
-        <div class="page-selector">
-            <?php
-            if ($currentPage > 1) {
-                echo "<a href='?page=" . ($currentPage - 1) . "'>Previous Page</a>";
-            }
-
-            for ($i = 1; $i <= $numPages; $i++) {
-                if ($i == $currentPage) {
-                    echo "<a href='?page=$i' class='active'>$i</a>";
-                } else {
-                    echo "<a href='?page=$i'>$i</a>";
-                }
-            }
-
-            if ($currentPage < $numPages) {
-                echo "<a href='?page=" . ($currentPage + 1) . "'>Next Page</a>";
-            }
-            ?>
-        </div>
+  <div class="login-box">
+    <h2>Log In</h2>
+    <?php if (!empty($error))
+      echo "<p class='error'>$error</p>"; ?>
+    <form method="POST">
+      <input type="text" name="custID" placeholder="UserID" required>
+      <button type="submit">Log in</button>
     </form>
-
-    <script>
-        // Store the selected customer names
-        let selectedCustomers = {};
-
-        // Function to dynamically add customer names to the form
-        function updateSelectedCustomers(checkbox, customerID, customerName) {
-            let form = document.querySelector('form');
-
-            if (checkbox.checked) {
-                // Create a new hidden input for the customer name
-                let hiddenInput = document.createElement('input');
-                hiddenInput.type = 'hidden';
-                hiddenInput.name = `customer_names[${customerID}]`;
-                hiddenInput.value = customerName;
-                form.appendChild(hiddenInput); // Append to form
-            } else {
-                // Remove the hidden input if checkbox is unchecked
-                let hiddenInput = form.querySelector(`input[name="customer_names[${customerID}]"]`);
-                if (hiddenInput) {
-                    form.removeChild(hiddenInput);
-                }
-            }
-        }
-    </script>
-
-
+  </div>
 </body>
 
 </html>
-
-<?php
-// Close the database connection
-$conn->close();
-?>

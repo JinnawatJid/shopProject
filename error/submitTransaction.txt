@@ -1,32 +1,32 @@
-[2025-02-17 08:18:50] Script started.
-[2025-02-17 08:18:50] Processing POST request.
-[2025-02-17 08:18:50] Selected Customers: Array
+[2025-02-21 05:36:21] Script started.
+[2025-02-21 05:36:21] Processing POST request.
+[2025-02-21 05:36:21] Selected Customers: Array
 (
-    [0] => C005
+    [0] => C001
 )
 
-[2025-02-17 08:18:50] Customer Names: Array
+[2025-02-21 05:36:21] Customer Names: Array
 (
-    [C005] => Eve Wyne
+    [C001] => Jack Man
 )
 
-[2025-02-17 08:18:50] Items: Array
+[2025-02-21 05:36:21] Items: Array
 (
     [0] => P001
     [1] => P002
     [2] => P003
 )
 
-[2025-02-17 08:18:50] Quantities: Array
+[2025-02-21 05:36:21] Quantities: Array
 (
-    [P001] => 1
-    [P002] => 2
-    [P003] => 2
+    [P001] => 2
+    [P002] => 4
+    [P003] => 1
 )
 
-[2025-02-17 08:18:50] VAT: 0.76
-[2025-02-17 08:18:50] Total with VAT: 11.66
-[2025-02-17 08:18:50] Fetched Products: Array
+[2025-02-21 05:36:21] VAT: 0.9
+[2025-02-21 05:36:21] Total with VAT: 13.7
+[2025-02-21 05:36:21] Fetched Products: Array
 (
     [0] => Array
         (
@@ -35,7 +35,7 @@
             [ProductDesc] => Organic Apple, also known as Sebu, is a highly nutritious fruit celebrated for its numerous health benefits.
             [PricePerUnit] => 3.50
             [ImageURL] => https://organicmandya.com/cdn/shop/files/Apples_bf998dd2-0ee8-4880-9726-0723c6fbcff3.jpg?v=1721368465&width=1000
-            [StockQty] => 71
+            [StockQty] => 70
         )
 
     [1] => Array
@@ -45,7 +45,7 @@
             [ProductDesc] => Organic Banana Elakki, also known as Small Banana or Elaichi Banana, is a delightful and nutrient-rich fruit cherished.
             [PricePerUnit] => 2.00
             [ImageURL] => https://organicmandya.com/cdn/shop/files/BananaElakki.jpg?v=1721369681&width=1000
-            [StockQty] => 185
+            [StockQty] => 180
         )
 
     [2] => Array
@@ -55,12 +55,12 @@
             [ProductDesc] => Organic Carrot, is renowned for its exceptional quality and flavor. Grown in the pristine environment of Ooty.
             [PricePerUnit] => 1.25
             [ImageURL] => https://organicmandya.com/cdn/shop/files/OotyCarrot.jpg?v=1721371505&width=1000
-            [StockQty] => 129
+            [StockQty] => 120
         )
 
 )
 
-[2025-02-17 08:18:50] Products by ID: Array
+[2025-02-21 05:36:21] Products by ID: Array
 (
     [P001] => Array
         (
@@ -69,7 +69,7 @@
             [ProductDesc] => Organic Apple, also known as Sebu, is a highly nutritious fruit celebrated for its numerous health benefits.
             [PricePerUnit] => 3.50
             [ImageURL] => https://organicmandya.com/cdn/shop/files/Apples_bf998dd2-0ee8-4880-9726-0723c6fbcff3.jpg?v=1721368465&width=1000
-            [StockQty] => 71
+            [StockQty] => 70
         )
 
     [P002] => Array
@@ -79,7 +79,7 @@
             [ProductDesc] => Organic Banana Elakki, also known as Small Banana or Elaichi Banana, is a delightful and nutrient-rich fruit cherished.
             [PricePerUnit] => 2.00
             [ImageURL] => https://organicmandya.com/cdn/shop/files/BananaElakki.jpg?v=1721369681&width=1000
-            [StockQty] => 185
+            [StockQty] => 180
         )
 
     [P003] => Array
@@ -89,22 +89,22 @@
             [ProductDesc] => Organic Carrot, is renowned for its exceptional quality and flavor. Grown in the pristine environment of Ooty.
             [PricePerUnit] => 1.25
             [ImageURL] => https://organicmandya.com/cdn/shop/files/OotyCarrot.jpg?v=1721371505&width=1000
-            [StockQty] => 129
+            [StockQty] => 120
         )
 
 )
 
-[2025-02-17 08:18:50] Database connection successful.
-[2025-02-17 08:18:50] Processing customer ID: C005, Name: Eve Wyne
-[2025-02-17 08:18:50] Inserted transaction header ID: 23
-[2025-02-17 08:18:50] Processing product ID: P001, Name: Apples, Quantity: 1, Price: 3.50
-[2025-02-17 08:18:50] Subtotal for product ID: P001 is 3.5
-[2025-02-17 08:18:50] Total price for product ID: P001 is 3.7533333333333
-[2025-02-17 08:18:50] Processing product ID: P002, Name: Bananas, Quantity: 2, Price: 2.00
-[2025-02-17 08:18:50] Subtotal for product ID: P002 is 4
-[2025-02-17 08:18:50] Total price for product ID: P002 is 4.2533333333333
-[2025-02-17 08:18:50] Processing product ID: P003, Name: Carrots, Quantity: 2, Price: 1.25
-[2025-02-17 08:18:50] Subtotal for product ID: P003 is 2.5
-[2025-02-17 08:18:50] Total price for product ID: P003 is 2.7533333333333
-[2025-02-17 08:18:50] Transaction committed successfully.
-[2025-02-17 08:18:50] Redirecting to receipt.php with success=true
+[2025-02-21 05:36:21] Database connection successful.
+[2025-02-21 05:36:21] Processing customer ID: C001, Name: Jack Man
+[2025-02-21 05:36:21] Inserted transaction header ID: 26
+[2025-02-21 05:36:21] Processing product ID: P001, Name: Apples, Quantity: 2, Price: 3.50
+[2025-02-21 05:36:21] Subtotal for product ID: P001 is 7
+[2025-02-21 05:36:21] Total price for product ID: P001 is 7.3
+[2025-02-21 05:36:21] Processing product ID: P002, Name: Bananas, Quantity: 4, Price: 2.00
+[2025-02-21 05:36:21] Subtotal for product ID: P002 is 8
+[2025-02-21 05:36:21] Total price for product ID: P002 is 8.3
+[2025-02-21 05:36:21] Processing product ID: P003, Name: Carrots, Quantity: 1, Price: 1.25
+[2025-02-21 05:36:21] Subtotal for product ID: P003 is 1.25
+[2025-02-21 05:36:21] Total price for product ID: P003 is 1.55
+[2025-02-21 05:36:21] Transaction committed successfully.
+[2025-02-21 05:36:21] Redirecting to receipt.php with success=true
