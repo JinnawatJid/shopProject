@@ -1,7 +1,7 @@
-[2025-02-20 06:57:23] --- Start fetchBestSeller.php ---
-[2025-02-20 06:57:23] Received startDate: null
-[2025-02-20 06:57:23] Received endDate: null
-[2025-02-20 06:57:23] SQL Query: SELECT
+[2025-02-21 05:20:12] --- Start fetchBestSeller.php ---
+[2025-02-21 05:20:12] Received startDate: null
+[2025-02-21 05:20:12] Received endDate: null
+[2025-02-21 05:20:12] SQL Query: SELECT
         p.ProductName,
         SUM(td.Qty) AS TotalSold
      FROM transaction_detail td
@@ -10,13 +10,13 @@
     GROUP BY p.ProductName
     ORDER BY TotalSold DESC
     LIMIT 3
-[2025-02-20 06:57:23] Best Seller Data: [{"ProductName":"Apples","TotalSold":"7"},{"ProductName":"Bananas","TotalSold":"7"},{"ProductName":"Carrots","TotalSold":"3"}]
-[2025-02-20 06:57:23] JSON response sent successfully
-[2025-02-20 06:57:23] --- End fetchBestSeller.php ---
-[2025-02-20 06:57:43] --- Start fetchBestSeller.php ---
-[2025-02-20 06:57:43] Received startDate: null
-[2025-02-20 06:57:43] Received endDate: null
-[2025-02-20 06:57:43] SQL Query: SELECT
+[2025-02-21 05:20:12] Best Seller Data: [{"ProductName":"Carrots","TotalSold":"10"},{"ProductName":"Bananas","TotalSold":"10"},{"ProductName":"Apples","TotalSold":"7"}]
+[2025-02-21 05:20:12] JSON response sent successfully
+[2025-02-21 05:20:12] --- End fetchBestSeller.php ---
+[2025-02-21 05:36:28] --- Start fetchBestSeller.php ---
+[2025-02-21 05:36:28] Received startDate: null
+[2025-02-21 05:36:28] Received endDate: null
+[2025-02-21 05:36:28] SQL Query: SELECT
         p.ProductName,
         SUM(td.Qty) AS TotalSold
      FROM transaction_detail td
@@ -25,13 +25,13 @@
     GROUP BY p.ProductName
     ORDER BY TotalSold DESC
     LIMIT 3
-[2025-02-20 06:57:43] Best Seller Data: [{"ProductName":"Bananas","TotalSold":"7"},{"ProductName":"Apples","TotalSold":"7"},{"ProductName":"Carrots","TotalSold":"3"}]
-[2025-02-20 06:57:43] JSON response sent successfully
-[2025-02-20 06:57:43] --- End fetchBestSeller.php ---
-[2025-02-20 06:58:34] --- Start fetchBestSeller.php ---
-[2025-02-20 06:58:34] Received startDate: null
-[2025-02-20 06:58:34] Received endDate: null
-[2025-02-20 06:58:34] SQL Query: SELECT
+[2025-02-21 05:36:28] Best Seller Data: [{"ProductName":"Bananas","TotalSold":"14"},{"ProductName":"Carrots","TotalSold":"11"},{"ProductName":"Apples","TotalSold":"9"}]
+[2025-02-21 05:36:28] JSON response sent successfully
+[2025-02-21 05:36:28] --- End fetchBestSeller.php ---
+[2025-02-21 05:38:07] --- Start fetchBestSeller.php ---
+[2025-02-21 05:38:07] Received startDate: null
+[2025-02-21 05:38:07] Received endDate: null
+[2025-02-21 05:38:07] SQL Query: SELECT
         p.ProductName,
         SUM(td.Qty) AS TotalSold
      FROM transaction_detail td
@@ -40,186 +40,6 @@
     GROUP BY p.ProductName
     ORDER BY TotalSold DESC
     LIMIT 3
-[2025-02-20 06:58:34] Best Seller Data: [{"ProductName":"Bananas","TotalSold":"7"},{"ProductName":"Apples","TotalSold":"7"},{"ProductName":"Carrots","TotalSold":"3"}]
-[2025-02-20 06:58:34] JSON response sent successfully
-[2025-02-20 06:58:34] --- End fetchBestSeller.php ---
-[2025-02-20 06:59:07] --- Start fetchBestSeller.php ---
-[2025-02-20 06:59:07] Received startDate: null
-[2025-02-20 06:59:07] Received endDate: null
-[2025-02-20 06:59:07] SQL Query: SELECT
-        p.ProductName,
-        SUM(td.Qty) AS TotalSold
-     FROM transaction_detail td
-     JOIN stock p ON td.IDProduct = p.IDProduct
-     JOIN transaction_header th ON td.IDtrans = th.IDtrans 
-    GROUP BY p.ProductName
-    ORDER BY TotalSold DESC
-    LIMIT 3
-[2025-02-20 06:59:07] Best Seller Data: [{"ProductName":"Bananas","TotalSold":"7"},{"ProductName":"Apples","TotalSold":"7"},{"ProductName":"Carrots","TotalSold":"3"}]
-[2025-02-20 06:59:07] JSON response sent successfully
-[2025-02-20 06:59:07] --- End fetchBestSeller.php ---
-[2025-02-20 06:59:14] --- Start fetchBestSeller.php ---
-[2025-02-20 06:59:14] Received startDate: "2025-02-01"
-[2025-02-20 06:59:14] Received endDate: "2025-02-19"
-[2025-02-20 06:59:14] SQL Query: SELECT
-        p.ProductName,
-        SUM(td.Qty) AS TotalSold
-     FROM transaction_detail td
-     JOIN stock p ON td.IDProduct = p.IDProduct
-     JOIN transaction_header th ON td.IDtrans = th.IDtrans  WHERE th.PendingTimestamp >= '2025-02-01 00:00:00' AND th.PendingTimestamp <= '2025-02-19 23:59:59'
-    GROUP BY p.ProductName
-    ORDER BY TotalSold DESC
-    LIMIT 3
-[2025-02-20 06:59:14] Best Seller Data: [{"ProductName":"Bananas","TotalSold":"2"},{"ProductName":"Carrots","TotalSold":"2"},{"ProductName":"Apples","TotalSold":"1"}]
-[2025-02-20 06:59:14] JSON response sent successfully
-[2025-02-20 06:59:14] --- End fetchBestSeller.php ---
-[2025-02-20 06:59:23] --- Start fetchBestSeller.php ---
-[2025-02-20 06:59:23] Received startDate: "2025-02-03"
-[2025-02-20 06:59:23] Received endDate: "2025-02-19"
-[2025-02-20 06:59:23] SQL Query: SELECT
-        p.ProductName,
-        SUM(td.Qty) AS TotalSold
-     FROM transaction_detail td
-     JOIN stock p ON td.IDProduct = p.IDProduct
-     JOIN transaction_header th ON td.IDtrans = th.IDtrans  WHERE th.PendingTimestamp >= '2025-02-03 00:00:00' AND th.PendingTimestamp <= '2025-02-19 23:59:59'
-    GROUP BY p.ProductName
-    ORDER BY TotalSold DESC
-    LIMIT 3
-[2025-02-20 06:59:23] Best Seller Data: [{"ProductName":"Bananas","TotalSold":"2"},{"ProductName":"Carrots","TotalSold":"2"},{"ProductName":"Apples","TotalSold":"1"}]
-[2025-02-20 06:59:23] JSON response sent successfully
-[2025-02-20 06:59:23] --- End fetchBestSeller.php ---
-[2025-02-20 06:59:33] --- Start fetchBestSeller.php ---
-[2025-02-20 06:59:33] Received startDate: "2025-02-05"
-[2025-02-20 06:59:33] Received endDate: "2025-02-19"
-[2025-02-20 06:59:33] SQL Query: SELECT
-        p.ProductName,
-        SUM(td.Qty) AS TotalSold
-     FROM transaction_detail td
-     JOIN stock p ON td.IDProduct = p.IDProduct
-     JOIN transaction_header th ON td.IDtrans = th.IDtrans  WHERE th.PendingTimestamp >= '2025-02-05 00:00:00' AND th.PendingTimestamp <= '2025-02-19 23:59:59'
-    GROUP BY p.ProductName
-    ORDER BY TotalSold DESC
-    LIMIT 3
-[2025-02-20 06:59:33] Best Seller Data: [{"ProductName":"Bananas","TotalSold":"2"},{"ProductName":"Carrots","TotalSold":"2"},{"ProductName":"Apples","TotalSold":"1"}]
-[2025-02-20 06:59:33] JSON response sent successfully
-[2025-02-20 06:59:33] --- End fetchBestSeller.php ---
-[2025-02-20 06:59:48] --- Start fetchBestSeller.php ---
-[2025-02-20 06:59:48] Received startDate: "2025-02-05"
-[2025-02-20 06:59:48] Received endDate: "2025-02-20"
-[2025-02-20 06:59:48] SQL Query: SELECT
-        p.ProductName,
-        SUM(td.Qty) AS TotalSold
-     FROM transaction_detail td
-     JOIN stock p ON td.IDProduct = p.IDProduct
-     JOIN transaction_header th ON td.IDtrans = th.IDtrans  WHERE th.PendingTimestamp >= '2025-02-05 00:00:00' AND th.PendingTimestamp <= '2025-02-20 23:59:59'
-    GROUP BY p.ProductName
-    ORDER BY TotalSold DESC
-    LIMIT 3
-[2025-02-20 06:59:48] Best Seller Data: [{"ProductName":"Bananas","TotalSold":"2"},{"ProductName":"Carrots","TotalSold":"2"},{"ProductName":"Apples","TotalSold":"1"}]
-[2025-02-20 06:59:48] JSON response sent successfully
-[2025-02-20 06:59:48] --- End fetchBestSeller.php ---
-[2025-02-20 06:59:54] --- Start fetchBestSeller.php ---
-[2025-02-20 06:59:54] Received startDate: "2025-01-01"
-[2025-02-20 06:59:54] Received endDate: "2025-02-20"
-[2025-02-20 06:59:54] SQL Query: SELECT
-        p.ProductName,
-        SUM(td.Qty) AS TotalSold
-     FROM transaction_detail td
-     JOIN stock p ON td.IDProduct = p.IDProduct
-     JOIN transaction_header th ON td.IDtrans = th.IDtrans  WHERE th.PendingTimestamp >= '2025-01-01 00:00:00' AND th.PendingTimestamp <= '2025-02-20 23:59:59'
-    GROUP BY p.ProductName
-    ORDER BY TotalSold DESC
-    LIMIT 3
-[2025-02-20 06:59:54] Best Seller Data: [{"ProductName":"Bananas","TotalSold":"7"},{"ProductName":"Apples","TotalSold":"7"},{"ProductName":"Carrots","TotalSold":"3"}]
-[2025-02-20 06:59:54] JSON response sent successfully
-[2025-02-20 06:59:54] --- End fetchBestSeller.php ---
-[2025-02-20 07:00:11] --- Start fetchBestSeller.php ---
-[2025-02-20 07:00:11] Received startDate: null
-[2025-02-20 07:00:11] Received endDate: null
-[2025-02-20 07:00:11] SQL Query: SELECT
-        p.ProductName,
-        SUM(td.Qty) AS TotalSold
-     FROM transaction_detail td
-     JOIN stock p ON td.IDProduct = p.IDProduct
-     JOIN transaction_header th ON td.IDtrans = th.IDtrans 
-    GROUP BY p.ProductName
-    ORDER BY TotalSold DESC
-    LIMIT 3
-[2025-02-20 07:00:11] Best Seller Data: [{"ProductName":"Bananas","TotalSold":"7"},{"ProductName":"Apples","TotalSold":"7"},{"ProductName":"Carrots","TotalSold":"3"}]
-[2025-02-20 07:00:11] JSON response sent successfully
-[2025-02-20 07:00:11] --- End fetchBestSeller.php ---
-[2025-02-20 07:02:18] --- Start fetchBestSeller.php ---
-[2025-02-20 07:02:18] Received startDate: null
-[2025-02-20 07:02:18] Received endDate: null
-[2025-02-20 07:02:18] SQL Query: SELECT
-        p.ProductName,
-        SUM(td.Qty) AS TotalSold
-     FROM transaction_detail td
-     JOIN stock p ON td.IDProduct = p.IDProduct
-     JOIN transaction_header th ON td.IDtrans = th.IDtrans 
-    GROUP BY p.ProductName
-    ORDER BY TotalSold DESC
-    LIMIT 3
-[2025-02-20 07:02:18] Best Seller Data: [{"ProductName":"Bananas","TotalSold":"7"},{"ProductName":"Apples","TotalSold":"7"},{"ProductName":"Carrots","TotalSold":"3"}]
-[2025-02-20 07:02:18] JSON response sent successfully
-[2025-02-20 07:02:18] --- End fetchBestSeller.php ---
-[2025-02-20 07:03:17] --- Start fetchBestSeller.php ---
-[2025-02-20 07:03:17] Received startDate: null
-[2025-02-20 07:03:17] Received endDate: null
-[2025-02-20 07:03:17] SQL Query: SELECT
-        p.ProductName,
-        SUM(td.Qty) AS TotalSold
-     FROM transaction_detail td
-     JOIN stock p ON td.IDProduct = p.IDProduct
-     JOIN transaction_header th ON td.IDtrans = th.IDtrans 
-    GROUP BY p.ProductName
-    ORDER BY TotalSold DESC
-    LIMIT 3
-[2025-02-20 07:03:17] Best Seller Data: [{"ProductName":"Bananas","TotalSold":"7"},{"ProductName":"Apples","TotalSold":"7"},{"ProductName":"Carrots","TotalSold":"3"}]
-[2025-02-20 07:03:17] JSON response sent successfully
-[2025-02-20 07:03:17] --- End fetchBestSeller.php ---
-[2025-02-20 07:05:06] --- Start fetchBestSeller.php ---
-[2025-02-20 07:05:06] Received startDate: null
-[2025-02-20 07:05:06] Received endDate: null
-[2025-02-20 07:05:06] SQL Query: SELECT
-        p.ProductName,
-        SUM(td.Qty) AS TotalSold
-     FROM transaction_detail td
-     JOIN stock p ON td.IDProduct = p.IDProduct
-     JOIN transaction_header th ON td.IDtrans = th.IDtrans 
-    GROUP BY p.ProductName
-    ORDER BY TotalSold DESC
-    LIMIT 3
-[2025-02-20 07:05:06] Best Seller Data: [{"ProductName":"Bananas","TotalSold":"7"},{"ProductName":"Apples","TotalSold":"7"},{"ProductName":"Carrots","TotalSold":"3"}]
-[2025-02-20 07:05:06] JSON response sent successfully
-[2025-02-20 07:05:06] --- End fetchBestSeller.php ---
-[2025-02-20 07:05:33] --- Start fetchBestSeller.php ---
-[2025-02-20 07:05:33] Received startDate: "2025-01-20"
-[2025-02-20 07:05:33] Received endDate: "2025-02-01"
-[2025-02-20 07:05:33] SQL Query: SELECT
-        p.ProductName,
-        SUM(td.Qty) AS TotalSold
-     FROM transaction_detail td
-     JOIN stock p ON td.IDProduct = p.IDProduct
-     JOIN transaction_header th ON td.IDtrans = th.IDtrans  WHERE th.PendingTimestamp >= '2025-01-20 00:00:00' AND th.PendingTimestamp <= '2025-02-01 23:59:59'
-    GROUP BY p.ProductName
-    ORDER BY TotalSold DESC
-    LIMIT 3
-[2025-02-20 07:05:33] Best Seller Data: [{"ProductName":"Bananas","TotalSold":"5"},{"ProductName":"Apples","TotalSold":"5"},{"ProductName":"Carrots","TotalSold":"1"}]
-[2025-02-20 07:05:33] JSON response sent successfully
-[2025-02-20 07:05:33] --- End fetchBestSeller.php ---
-[2025-02-20 07:05:44] --- Start fetchBestSeller.php ---
-[2025-02-20 07:05:44] Received startDate: "2025-01-31"
-[2025-02-20 07:05:44] Received endDate: "2025-02-28"
-[2025-02-20 07:05:44] SQL Query: SELECT
-        p.ProductName,
-        SUM(td.Qty) AS TotalSold
-     FROM transaction_detail td
-     JOIN stock p ON td.IDProduct = p.IDProduct
-     JOIN transaction_header th ON td.IDtrans = th.IDtrans  WHERE th.PendingTimestamp >= '2025-01-31 00:00:00' AND th.PendingTimestamp <= '2025-02-28 23:59:59'
-    GROUP BY p.ProductName
-    ORDER BY TotalSold DESC
-    LIMIT 3
-[2025-02-20 07:05:44] Best Seller Data: [{"ProductName":"Bananas","TotalSold":"7"},{"ProductName":"Apples","TotalSold":"6"},{"ProductName":"Carrots","TotalSold":"3"}]
-[2025-02-20 07:05:44] JSON response sent successfully
-[2025-02-20 07:05:44] --- End fetchBestSeller.php ---
+[2025-02-21 05:38:07] Best Seller Data: [{"ProductName":"Bananas","TotalSold":"14"},{"ProductName":"Carrots","TotalSold":"11"},{"ProductName":"Apples","TotalSold":"9"}]
+[2025-02-21 05:38:07] JSON response sent successfully
+[2025-02-21 05:38:07] --- End fetchBestSeller.php ---
