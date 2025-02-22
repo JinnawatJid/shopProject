@@ -13,6 +13,8 @@ include __DIR__ . '/../condb.php';
     <style>
         <?php include '../style/dashboard.css'; ?>
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 
 <body>
@@ -28,6 +30,7 @@ include __DIR__ . '/../condb.php';
             <input type="date" id="endDate" name="endDate">
 
             <button onclick="applyDateFilter()">Apply Filter</button>
+            <button onclick="exportToPDF()">Export to PDF</button>
         </div>
     </div>
 
@@ -181,26 +184,24 @@ include __DIR__ . '/../condb.php';
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById('AOV').textContent = data.total; // Display AOV value
+                    document.getElementById('AOV').textContent = data.total + ' USD'; // Display AOV value
                 })
                 .catch(error => console.error('Error fetching Average Order Value:', error));
         }
 
-        // Function to fetch and display orders
-        function fetchOrders(startDate = null, endDate = null) { // Add startDate and endDate parameters
+        function fetchOrders(startDate = null, endDate = null) {
             let url = '../routes/fetchTransactionHeader.php';
             if (startDate && endDate) {
-                url += `?startDate=${startDate}&endDate=${endDate}`; // Append dates as query parameters
+                url += `?startDate=${startDate}&endDate=${endDate}`;
             }
 
-            console.log("Fetching Orders from URL:", url); // Log the URL
+            console.log("Fetching Orders from URL:", url);
 
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
                     let ordersHtml = '<table><tr><th>IDtrans</th><th>IDCust</th><th>CustName</th><th>Status</th><th>Pending Timestamp</th><th>Approve Timestamp</th><th>Actions</th></tr>';
                     data.forEach(order => {
-                        // Determine the CSS class based on the status
                         let statusClass = '';
                         if (order.status === 'Pending') {
                             statusClass = 'status-pending';
@@ -210,25 +211,23 @@ include __DIR__ . '/../condb.php';
                             statusClass = 'status-cancel';
                         }
                         ordersHtml += `<tr>
-                            <td>${order.IDtrans}</td>
-                            <td>${order.IDCust}</td>
-                            <td>${order.CustName}</td>
-                            <td class="${statusClass}">${order.status}</td>
-                            <td>${order.PendingTimestamp}</td>
-                            <td>${order.ApproveTimestamp}</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="approve" onclick="updateOrderStatus(${order.IDtrans}, 'Approve')">Approve</button>
-                                    <button class="cancel" onclick="updateOrderStatus(${order.IDtrans}, 'Cancel')">Cancel</button>
-                                </div>
-                            </td>
-                        </tr>`;
+                    <td><a href="transactionDetail.php?IDtrans=${order.IDtrans}">${order.IDtrans}</a></td>  <td>${order.IDCust}</td>
+                    <td>${order.CustName}</td>
+                    <td class="${statusClass}">${order.status}</td>
+                    <td>${order.PendingTimestamp}</td>
+                    <td>${order.ApproveTimestamp}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="approve" onclick="updateOrderStatus(${order.IDtrans}, 'Approve')">Approve</button>
+                            <button class="cancel" onclick="updateOrderStatus(${order.IDtrans}, 'Cancel')">Cancel</button>
+                        </div>
+                    </td>
+                </tr>`;
                     });
                     ordersHtml += '</table>';
                     document.getElementById('orders').innerHTML = ordersHtml;
                 });
         }
-
         // Function to fetch and display stock
         function fetchStock() {
             fetch('../routes/fetchProduct.php')
@@ -310,6 +309,90 @@ include __DIR__ . '/../condb.php';
             }
         }
 
+        function exportToPDF() {
+            window.jsPDF = window.jspdf.jsPDF;
+            console.log("Export to PDF function started");
+
+            // --- Temporarily Remove Backgrounds ---
+            const elementsToModify = document.querySelectorAll('.box, .container, body'); // Select elements with potential backgrounds
+            const originalStyles = []; // Array to store original styles
+
+            elementsToModify.forEach(element => {
+                originalStyles.push({
+                    element: element,
+                    backgroundColor: element.style.backgroundColor,
+                    backgroundImage: element.style.backgroundImage
+                });
+                element.style.backgroundColor = 'transparent'; // Set background to transparent
+                element.style.backgroundImage = 'none'; // Remove background image (if any)
+            });
+
+            // --- Temporarily Hide the go-to-index Element ---
+            const goToIndexElement = document.querySelector('.go-to-index');
+            let originalDisplayGoToIndex = '';
+            if (goToIndexElement) {
+                originalDisplayGoToIndex = goToIndexElement.style.display;
+                goToIndexElement.style.display = 'none';
+            }
+
+
+            html2canvas(document.body).then(function(canvas) {
+                console.log("html2canvas promise resolved, canvas object:", canvas);
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                console.log("jsPDF object initialized:", pdf);
+                const imgData = canvas.toDataURL('image/png');
+                console.log("Image data URL created:", imgData.substring(0, 50) + "...");
+                const pageWidth = pdf.internal.pageSize.getWidth();
+                const pageHeight = pdf.internal.pageSize.getHeight();
+                const imageWidth = canvas.width;
+                const imageHeight = canvas.height;
+                let widthRatio = pageWidth / imageWidth;
+                let heightRatio = pageHeight / imageHeight;
+                let ratio = Math.min(widthRatio, heightRatio);
+                let finalWidth = imageWidth * ratio;
+                let finalHeight = imageHeight * ratio;
+                let positionX = (pageWidth - finalWidth) / 2;
+                let positionY = (pageHeight - finalHeight) / 2;
+                console.log("Before addImage - positionX:", positionX, "positionY:", positionY, "finalWidth:", finalWidth, "finalHeight:", finalHeight);
+                pdf.addImage(imgData, 'PNG', positionX, positionY, finalWidth, finalHeight);
+                console.log("addImage function completed");
+
+                // --- Generate Timestamp for Filename ---
+                const now = new Date();
+                const timestamp = now.toISOString().replace(/[:T\-\.]/g, "_");
+                const filename = `report_${timestamp}.pdf`;
+
+                pdf.save(filename);
+                console.log("pdf.save() called with filename:", filename);
+
+                // --- Restore Original Background Styles ---
+                originalStyles.forEach(style => {
+                    style.element.style.backgroundColor = style.backgroundColor;
+                    style.element.style.backgroundImage = style.backgroundImage;
+                });
+
+                // --- Restore go-to-index Element Visibility ---
+                if (goToIndexElement) {
+                    goToIndexElement.style.display = originalDisplayGoToIndex;
+                }
+
+
+            }).catch(function(error) {
+                console.error("Error in html2canvas:", error);
+                // --- Restore Original Background Styles in case of error --- (Important for error handling)
+                originalStyles.forEach(style => {
+                    style.element.style.backgroundColor = style.backgroundColor;
+                    style.element.style.backgroundImage = style.backgroundImage;
+                });
+
+                // --- Restore go-to-index Element Visibility in error case ---
+                if (goToIndexElement) {
+                    goToIndexElement.style.display = originalDisplayGoToIndex;
+                }
+            });
+            console.log("Export to PDF function finished (asynchronously)");
+        }
+        
         // Apply Date Filter Function
         function applyDateFilter() {
             const startDate = document.getElementById('startDate').value;
